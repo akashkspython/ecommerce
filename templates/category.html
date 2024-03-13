@@ -1,0 +1,97 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block metadescription %}
+      {% if category %}
+          {{ category.description|truncatewords:155 }}
+      {% else %}
+          Welcome to NIKE Store Where you can buy items ....
+      {% endif %}
+{% endblock %}
+{% block title %}
+{% if category %}
+         {{ category.name }} - NIKE Store
+      {% else %}
+          See our new collections - NIKE Store
+      {% endif %}
+{% endblock %}
+
+{% block content %}
+{% if hideme %}
+{% if category %}
+
+<div>
+    <div class="row my_row_class">
+        <div class="mx-auto">
+         <p><a href="{% url 'shop:allProdCat' %} ">OUR Product Collections"</a> </p>
+        </div>
+    </div>
+</div>
+     {% endif %}
+<div class="mx_auto">
+     {% if category %}
+      <img class="my_image" src="{{category.image.url }}" alt="{{category.name}}">
+</div>
+    <br>
+<div>
+    <h1 class="text-center my_title ">{{category.name }}</h1>
+    <p class="text-justify">{{category.description}}</p>
+</div>
+   {% else %}
+  <div>
+      <div id="carouselExampleSlidesOnly" class="carousel slide" data-bs-ride="carousel">
+  <div class="carousel-inner">
+    <div class="carousel-item active">
+      <img src="{% static 'img/banner30.jpg' %}" class="d-block w-100" alt="oru product" width="1130x" height="600x" ;>
+    </div>
+    <div class="carousel-item">
+      <img src="{% static 'img/banner20.jpg' %}" class="d-block w-100" alt="oru product" width="1130x" height="600x" ;>
+    </div>
+    <div class="carousel-item">
+      <img src="{% static 'img/banner21.jpg' %}" class="d-block w-100" alt="oru product" width="1130x" height="600x" ;>
+    </div>
+  </div>
+</div>
+  </div>
+<div>
+    <center>
+     <h1 class="text-center my-title"><b>LEAVE YOURSELF</b></h1>
+     <h2>IN THE DUST</h2>
+    </center>
+    <div>
+        <h1></h1>
+    </div>
+    <center><P class="text-justify"> Marathon speed to push beyond what you thought possible.</P></center>
+</div>
+{% endif %}
+{% endif %}
+
+<div class="container">
+    <div class="row mx_auto">
+        {% for product in products.object_list %}
+       <div class="my_bottem_margin col-9 col-sm-12 col-md-4  xol-lg-4">
+            <div class="card text-center" style="min-width:18rem;">
+               <a href="{{product.get_url}}"><img class="card-img-top my_image" src="{{product.image.url}}" alt="{{product.name}}" style="width: 200px; height: 200px;"></a>
+                 <div class="card-body">
+                   <h4> {{ product.name }}</h4>
+                    <p>{{ product.price }}</p>
+                 </div>
+            </div>
+       </div>
+       {% endfor %}
+    </div>
+    <div class="mx-auto">
+        {% if products.paginator.num_pages > 1 %}
+
+        <hr>
+        <div class="text-center">
+            {% for pg in products.paginator.page_range %}
+             <a href="?page={{pg}}"  class="btn btn-light btn-sm {% if products.number == pg %} active {%endif %}">{{pg}}</a>
+            {% endfor %}
+        </div>
+        {% endif %}
+    </div>
+    <br>
+</div>
+{% endblock %}
+
+
